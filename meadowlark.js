@@ -8,6 +8,12 @@ app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 app.set('port', process.env.PORT || 3000);
 //Static middleware:
+app.use(function(req, res, next){
+    res.locals.showTests = app.get('env') !== 'production' &&
+        req.query.test === '1';
+    next();
+});
+// routes go here....
 app.use(express.static(__dirname + '/public'));
 app.get('/', function(req, res) {
     res.render('home');
