@@ -58,6 +58,16 @@ app.listen(app.get('port'), function(){
     console.log( 'Express started on http://localhost:' +
         app.get('port') + '; press Ctrl-C to terminate.' );
 });
+var handlebars = require('express-handlebars').create({
+    defaultLayout:'main',
+    helpers: {
+        section: function(name, options){
+            if(!this._sections) this._sections = {};
+            this._sections[name] = options.fn(this);
+            return null;
+        }
+    }
+});
 function getWeatherData(){
     return {
         locations: [
@@ -84,14 +94,4 @@ function getWeatherData(){
             },
         ]
     };
-}
-var handlebars = require('express-handlebars').create({
-    defaultLayout:'main',
-    helpers: {
-        section: function(name, options){
-            if(!this._sections) this._sections = {};
-            this._sections[name] = options.fn(this);
-            return null;
-        }
-    }
-});
+};
